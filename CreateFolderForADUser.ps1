@@ -2,9 +2,12 @@
 
 # Get contents from property.txt and set value to credential, searchBase and server variable.
 $contents   = Get-Content -Path .\property.txt
-$credential = $contents[0]
-$searchBase = $contents[1]
-$server     = $contents[2]
+$userName   = $contents[0]
+$password   = $contents[1] | ConvertTo-SecureString -AsPlainText -Force
+$searchBase = $contents[2]
+$server     = $contents[3]
+$path       = "C:\Users\ponalvin\Desktop\webaccounts-scripts\"
+$credential = New-Object System.Management.Automation.PSCredential $userName, $password
 
 # Get ADUsers from server and extract name attribute.
 $sAMAccountNames = Get-ADUser -Credential $credential -Filter * -ResultSetSize $null -SearchBase $searchBase -Server $server | Select-Object -ExpandProperty "sAMAccountName"
@@ -12,18 +15,18 @@ $sAMAccountNames = Get-ADUser -Credential $credential -Filter * -ResultSetSize $
 # Create folder for each name if it doesn't exist.
 # Reference page: https://technet.microsoft.com/en-us/library/ff730951.aspx
 foreach ($sAMAccountName in $sAMAccountNames) {
-    if ((Test-Path -Path "C:\Users\ponalvin\Desktop\webaccounts-scripts\$sAMAccountName" -PathType Container) -eq $true) {
+    if ((Test-Path -Path ($path + $sAMAccountName) -PathType Container) -eq $true) {
         Write-Host "This folder exists."
     } else {
-        New-Item -ItemType "directory" -Name $sAMAccountName -Path "C:\Users\ponalvin\Desktop\webaccounts-scripts\"
-        $fileSystemAccessRight  = [System.Security.AccessControl.FileSystemRights]"Read"
+        New-Item -ItemType "directory" -Name $sAMAccountName -Path $path
+        $fileSystemAccessRight  = [System.Security.AccessControl.FileSystemRights]::FullControl
         $inheritanceFlag        = [System.Security.AccessControl.InheritanceFlags]::None
         $propagationFlag        = [System.Security.AccessControl.PropagationFlags]::None
         $accessControlType      = [System.Security.AccessControl.AccessControlType]::Allow
         $fileSystemAccessRule   = New-Object System.Security.AccessControl.FileSystemAccessRule("SMCNET\ponalvin", $fileSystemAccessRight, $inheritanceFlag, $propagationFlag, $accessControlType)
-        $objectOfACL            = Get-Acl -Path "C:\Users\ponalvin\Desktop\webaccounts-scripts\$sAMAccountName"
+        $objectOfACL            = Get-Acl -Path ($path + $sAMAccountName)
         $objectOfACL.AddAccessRule($fileSystemAccessRule)
-        Set-Acl -Path "C:\Users\ponalvin\Desktop\webaccounts-scripts\$sAMAccountName" -AclObject $objectOfACL
+        Set-Acl -Path ($path + $sAMAccountName) -AclObject $objectOfACL
     }
 }
 
