@@ -1,19 +1,11 @@
 ﻿Import-Module ActiveDirectory
 
-# Get contents from property.txt and set value to credential, searchBase and server variable.
-$contents   = Get-Content -Path .\property.txt
-$userName   = $contents[0]
-$password   = $contents[1] | ConvertTo-SecureString -AsPlainText -Force
-$searchBase = $contents[2]
-$server     = $contents[3]
-$path       = "C:\Users\ponalvin\Desktop\webaccounts-scripts\"
-$credential = New-Object System.Management.Automation.PSCredential $userName, $password
+.\Variables.ps1
 
 # Get ADUsers from server and extract name attribute.
 $sAMAccountNames = Get-ADUser -Credential $credential -Filter * -ResultSetSize $null -SearchBase $searchBase -Server $server | Select-Object -ExpandProperty "sAMAccountName"
 
 # Create folder for each name if it doesn't exist.
-# Reference page: https://technet.microsoft.com/en-us/library/ff730951.aspx
 foreach ($sAMAccountName in $sAMAccountNames) {
     if ((Test-Path -Path ($path + $sAMAccountName) -PathType Container) -eq $true) {
         Write-Host "This folder exists."
@@ -24,25 +16,12 @@ foreach ($sAMAccountName in $sAMAccountNames) {
         $propagationFlag        = [System.Security.AccessControl.PropagationFlags]::None
         $accessControlType      = [System.Security.AccessControl.AccessControlType]::Allow
         $fileSystemAccessRule   = New-Object System.Security.AccessControl.FileSystemAccessRule("SMCNET\ponalvin", $fileSystemAccessRight, $inheritanceFlag, $propagationFlag, $accessControlType)
+        #$fileSystemAccessRule   = New-Object System.Security.AccessControl.FileSystemAccessRule("$domain\$sAMAccountName", $fileSystemAccessRight, $inheritanceFlag, $propagationFlag, $accessControlType)
         $objectOfACL            = Get-Acl -Path ($path + $sAMAccountName)
         $objectOfACL.AddAccessRule($fileSystemAccessRule)
         Set-Acl -Path ($path + $sAMAccountName) -AclObject $objectOfACL
     }
 }
-
-# Not workable functions. Please don't uncomment.
-<#
-function Get-ContentsFromFile($credential, $searchBase, $server) {
-    $contents    = Get-Content -Path .\property.txt
-    $credential = $contents[0]
-    $searchBase = $contents[1]
-    $server     = $contents[2]
-}
-
-function Get-ADUSersFromRemoteServer($ADUsers, $credential, $searchBase, $server) {
-    $ADUsers = Get-ADUser -Credential $credential -Filter * -ResultSetSize $null -SearchBase $searchBase -Server $server | Select-Object -ExpandProperty 'SamAccountName'
-}
-#>
 
 #Reference script. Please don't uncomment.
 <#
