@@ -1,11 +1,11 @@
-﻿$username              = "username"
-$password              = "password" | ConvertTo-SecureString -AsPlainText -Force
-$company               = "company"
-$searchBase            = "ou=ou,dc=dc,dc=dc"
-$server                = "server"
-$domain                = "domain"
-$path                  = "path"
-$fileSystemAccessRight = [System.Security.AccessControl.FileSystemRights]::FullControl
-$inheritanceFlag       = [System.Security.AccessControl.InheritanceFlags]::None
-$propagationFlag       = [System.Security.AccessControl.PropagationFlags]::None
-$accessControlType     = [System.Security.AccessControl.AccessControlType]::Allow
+﻿$Username          = "username"
+$Password          = "password" | ConvertTo-SecureString -AsPlainText -Force
+$DefaultCompany    = "company"
+$SearchBase        = "ou=ou,dc=dc,dc=dc"
+$Server            = "server"
+$Domain            = "domain"
+$Path              = "path"
+$FileSystemRight   = [System.Security.AccessControl.FileSystemRights]::FullControl
+$InheritanceFlag   = [System.Security.AccessControl.InheritanceFlags]::None
+$PropagationFlag   = [System.Security.AccessControl.PropagationFlags]::None
+$AccessControlType = [System.Security.AccessControl.AccessControlType]::Allow
