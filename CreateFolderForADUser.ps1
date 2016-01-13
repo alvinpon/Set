@@ -11,7 +11,7 @@
     }
 
     
-    # Catch all exceptions when excuting cmdlets and print error message
+    # Catch all exceptions when executing cmdlets and print error message
     try {
         # Set credential for remote server
         $Credential = New-Object -ArgumentList $Username, $Password -TypeName System.Management.Automation.PSCredential -ErrorAction Stop
