@@ -4,7 +4,8 @@ $DefaultCompany    = "company"
 $SearchBase        = "ou=ou,dc=dc,dc=dc"
 $Server            = "server"
 $Domain            = "domain"
-$Path              = "path"
+$PathOfADUserFolder = "path of ADUser folder"
+$PathOfLogFile      = "path of log file"
 $FileSystemRight   = [System.Security.AccessControl.FileSystemRights]::FullControl
 $InheritanceFlag   = [System.Security.AccessControl.InheritanceFlags]::None
 $PropagationFlag   = [System.Security.AccessControl.PropagationFlags]::None
