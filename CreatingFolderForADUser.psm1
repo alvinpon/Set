@@ -1,15 +1,15 @@
-﻿function Create-FolderForADUser ([String] $Company) {
+﻿function New-FolderForADUser ([String] $Company) {
     # Import ActiveDirectory module
     Import-Module ActiveDirectory
 
     # Load common variables into this script
-    . .\Variables.ps1
+    $PathOfVariablesFile = $env:PSModulePath.Substring(0, $env:PSModulePath.IndexOf(';')) + "\CreatingFolderForADUser\Variables.ps1"
+    . $PathOfVariablesFile
 
     # If $Company length is zero or $Company is an empty string, assigning $DefaultCompany value to $Company
     if ($Company.Length -eq 0 -or $Company.Equals("")) {
         $Company = $DefaultCompany
     }
-
     
     # Catch all exceptions when executing cmdlets and print error message
     try {
