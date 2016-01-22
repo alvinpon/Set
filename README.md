@@ -17,7 +17,7 @@
 > * $PropagationFlag       = [System.Security.AccessControl.PropagationFlags]::None
 > * $AccessControlType     = [System.Security.AccessControl.AccessControlType]::Allow
 # 4. Excute Function
-> ## Not Use Parameter
->> * New-FolderForADUser
-> ## Use Parameter
->> * New-FolderForADUser -Company "CSM"
+> ## Without Parameter
+	* ./run.ps1
+> ## Company Parameter
+>> * ./run.ps1 -Company "District Office"
