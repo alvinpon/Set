@@ -26,7 +26,7 @@
         $Credential = New-Object -ArgumentList $Username, $Password -TypeName System.Management.Automation.PSCredential -ErrorAction Stop
         
         # Query ADUsers and extract SamAccountName attribute, if there is no SamAccountName attribute then throws an exception.
-        $SamAccountNames = Get-ADUser -Credential $Credential -Filter {(Company -eq $Company) -and (EmployeeID -eq 'G') -and (ObjectClass -eq "user")} -ResultSetSize $null -SearchBase $SearchBase -Server $Server | Select-Object -ExpandProperty "SamAccountName"
+        $SamAccountNames = Get-ADUser -Credential $Credential -Filter {(Company -eq $Company) -and (EmployeeID -eq 'G') -and (ObjectClass -eq "user")} -SearchBase $SearchBase -Server $Server | Select-Object -ExpandProperty "SamAccountName"
         if ($SamAccountNames.Length -eq 0) {
             throw [System.Management.Automation.RuntimeException] "No SamAccountNames Found for $Company."
         }
