@@ -1,23 +1,21 @@
 
-# 1. Execute InstallingScript
-> * For example: C:\Users\ponalvin\Desktop\webaccounts-scripts\InstallingModule.ps1
-# 2. Rename File 
+# 1. Rename File 
 > * Rename VariablesSample.ps1 to Variables.ps1
-# 3. Assign Value
-> * $Username              = "Username"
-> * $Password              = "Password" | ConvertTo-SecureString -AsPlainText -Force
-> * $DefaultCompany        = "DefaultCompany"
-> * $SearchBase            = "ou=ou,dc=dc,dc=dc"
-> * $Server                = "Server"
-> * $Domain                = "Domain"
-> * $ADUserFolderPath      = "PathOfADUserFolder"
-> * $LogFilePath           = "PathOfLogFile"
-> * $FileSystemAccessRight = [System.Security.AccessControl.FileSystemRights]::FullControl
-> * $InheritanceFlag       = [System.Security.AccessControl.InheritanceFlags]::None
-> * $PropagationFlag       = [System.Security.AccessControl.PropagationFlags]::None
-> * $AccessControlType     = [System.Security.AccessControl.AccessControlType]::Allow
-# 4. Excute Function
+# 2. Assign Value
+> * $DefaultUsername          = "username"
+> * $DefaultPassword          = "password"
+> * $DefaultCompany           = "company"
+> * $DefaultSearchBase        = "ou=ou,dc=dc,dc=dc"
+> * $DefaultServer            = "server"
+> * $DefaultDomain            = "domain"
+> * $DefaultADUserFolderPath  = "ADUser folder path"
+> * $DefaultLogFilePath       = "log file path"
+> * $DefaultFileSystemRight   = [System.Security.AccessControl.FileSystemRights]::FullControl
+> * $DefaultInheritanceFlag   = [System.Security.AccessControl.InheritanceFlags]::None
+> * $DefaultPropagationFlag   = [System.Security.AccessControl.PropagationFlags]::None
+> * $DefaultAccessControlType = [System.Security.AccessControl.AccessControlType]::Allow
+# 3. Excute Function
 > ## Without Parameter
-	* ./run.ps1
+>> * ./Run.ps1
 > ## Company Parameter
->> * ./run.ps1 -Company "District Office"
+>> * ./Run.ps1 -Company "CSM"
