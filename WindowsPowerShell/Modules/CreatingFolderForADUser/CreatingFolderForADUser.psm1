@@ -14,9 +14,11 @@
     [System.String] $Server,
     [System.String] $Username
 ) {
-    
     # Import ActiveDirectory module
     Import-Module ActiveDirectory
+
+    $UnsuccessfullyCreatedCount = 0
+    $SuccessfullyCreatedCount   = 0
         
     # Catch all exceptions when executing cmdlets and print error message
     try {
@@ -30,21 +32,24 @@
         }
         
         # Create folder for each name if it doesn't exist and record into Log.txt.
-        Get-Date | Out-File -Append -FilePath $LogFilePath
+        Get-Date | Tee-Object -Append -FilePath $LogFilePath
         foreach ($SamAccountName in $SamAccountNames) {
             if ((Test-Path -Path ($ADUserFolderPath + $SamAccountName) -PathType Container) -eq $true) {
-                $SamAccountName + " folder has existed." | Out-File -Append -FilePath $LogFilePath
+                ((Get-Date).ToString() + " unsuccessfully created folder, $SamAccountName.") | Tee-Object -Append -FilePath $LogFilePath
+                $UnSuccessfullyCreatedCount++
             } else {
-                New-Item -ItemType "directory" -Name $SamAccountName -Path $ADUserFolderPath
+                New-Item -ItemType "directory" -Name $SamAccountName -Path $ADUserFolderPath | Out-Null
                 $FileSystemAccessRule   = New-Object System.Security.AccessControl.FileSystemAccessRule("$Domain\$SamAccountName", $FileSystemRight, $InheritanceFlag, $PropagationFlag, $AccessControlType)
                 $ObjectOfACL            = Get-Acl -Path ($ADUserFolderPath + $SamAccountName)
                 $ObjectOfACL.AddAccessRule($FileSystemAccessRule)
                 Set-Acl -AclObject $ObjectOfACL -Path ($ADUserFolderPath + $SamAccountName)
-                "$SamAccountName folder has created. File system right is $FileSystemRight" | Out-File -Append -FilePath $LogFilePath
+                ((Get-Date).ToString() + " successfully created folder, $SamAccountName.") | Tee-Object -Append -FilePath $LogFilePath
+                $SuccessfullyCreatedCount++
             }
         }
+        "Unsuccessfully created folders " + $UnSuccessfullyCreatedCount.ToString() + ", " + "Successfully created folders " + $SuccessfullyCreatedCount.ToString() + " ." | Tee-Object -Append -FilePath $LogFilePath
     } catch [Exception] {
-        Write-Host "The type of exception: " $_.Exception.GetType().FullName
-        Write-Host "Error message: "         $Error[0]
+        "The type of exception: " + $_.Exception.GetType().FullName | Tee-Object -Append -FilePath $LogFilePath
+        "Error message: " + $Error[0] | Tee-Object -Append -FilePath $LogFilePath
     }
 }
