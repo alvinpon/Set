@@ -10,6 +10,7 @@
 > * $DefaultDomain            = "domain"
 > * $DefaultADUserFolderPath  = "ADUser folder path"
 > * $DefaultLogFilePath       = "log file path"
+> * $DefaultSiteName          = "Default Web Site"
 > * $DefaultFileSystemRight   = [System.Security.AccessControl.FileSystemRights]::FullControl
 > * $DefaultInheritanceFlag   = [System.Security.AccessControl.InheritanceFlags]::None
 > * $DefaultPropagationFlag   = [System.Security.AccessControl.PropagationFlags]::None
@@ -17,5 +18,5 @@
 # 3. Excute Function
 > ## Without Parameter
 >> * ./Run.ps1
-> ## Company Parameter
+> ## With Parameter
 >> * ./Run.ps1 -Company "CSM"

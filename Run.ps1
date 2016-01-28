@@ -11,6 +11,7 @@ param(
     [System.String] $Password,
     [System.String] $SearchBase,
     [System.String] $Server,
+    [System.String] $SiteName,
     [System.String] $Username
 )
 
@@ -36,16 +37,20 @@ if ($LogFilePath.Length -eq 0) {
     $LogFilePath = $DefaultLogFilePath
 }
 
-if ($Password.Length -eq 0 ) {
+if ($Password.Length -eq 0) {
     $Password = $DefaultPassword
 }
 
-if ($SearchBase.Length -eq 0 ) {
+if ($SearchBase.Length -eq 0) {
     $SearchBase = $DefaultSearchBase
 }
 
 if ($Server.Length -eq 0) {
     $Server = $DefaultServer
+}
+
+if ($SiteName.Length -eq 0) {
+    $SiteName = $DefaultSiteName
 }
 
 if ($Username.Length -eq 0) {
@@ -76,8 +81,8 @@ if ([Environment]::GetEnvironmentVariable("PSModulePath").Contains($CurrentModul
     [Environment]::SetEnvironmentVariable("PSModulePath", ([Environment]::GetEnvironmentVariable("PSModulePath") + ';' + $CurrentModulePath))
 }
 
-Import-Module -Force -Name CreatingFolderForADUser -Verbose
+Import-Module -Force -Name NewFolderForADUser -Verbose
+$Usernames = New-FolderForADUser -ADUserFolderPath $ADUserFolderPath -Company $Company -Domain $Domain -LogFilePath $LogFilePath -Password $Password -SearchBase $SearchBase -Server $Server -Username $Username -AccessControlType $AccessControlType -FileSystemRight $FileSystemRight -InheritanceFlag $InheritanceFlag -PropagationFlag $PropagationFlag
 
-$Password = ConvertTo-SecureString -String $Password -AsPlainText -Force
-
-New-FolderForADUser -ADUserFolderPath $ADUserFolderPath -Company $Company -Domain $Domain -LogFilePath $LogFilePath -Password $Password -SearchBase $SearchBase -Server $Server -Username $Username -AccessControlType $AccessControlType -FileSystemRight $FileSystemRight -InheritanceFlag $InheritanceFlag -PropagationFlag $PropagationFlag
+Import-Module -Force -Name AddingWebDAVAuthoringRules -Verbose
+Add-WebDAVAuthoringRules -Domain $Domain -SiteName $SiteName -Usernames $Usernames
