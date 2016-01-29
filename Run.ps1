@@ -21,6 +21,22 @@ $FolderPathOfCurrentScript = Split-Path -Parent $MyInvocation.MyCommand.Path
 # Source Variables file path
 . ($FolderPathOfCurrentScript + "\Variables.ps1")
 
+if ($AccessControlType -eq $null) {
+    $AccessControlType = $DefaultAccessControlType
+}
+
+if ($FileSystemRight -eq $null) {
+    $FileSystemRight = $DefaultFileSystemRight
+}
+
+if ($InheritanceFlag -eq $null) {
+    $InheritanceFlag = $DefaultInheritanceFlag
+}
+
+if ($PropagationFlag -eq $null) {
+    $PropagationFlag = $DefaultPropagationFlag
+}
+
 if ($ADUserFolderPath.Length -eq 0) {
     $ADUserFolderPath = $DefaultADUserFolderPath
 }
@@ -55,22 +71,6 @@ if ($SiteName.Length -eq 0) {
 
 if ($Username.Length -eq 0) {
     $Username = $DefaultUsername
-}
-
-if ($AccessControlType -eq $null) {
-    $AccessControlType = $DefaultAccessControlType
-}
-
-if ($FileSystemRight -eq $null) {
-    $FileSystemRight = $DefaultFileSystemRight
-}
-
-if ($InheritanceFlag -eq $null) {
-    $InheritanceFlag = $DefaultInheritanceFlag
-}
-
-if ($PropagationFlag -eq $null) {
-    $PropagationFlag = $DefaultPropagationFlag
 }
 
 # Set current module path
