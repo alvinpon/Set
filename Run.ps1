@@ -11,6 +11,7 @@ param(
     [System.String] $Password,
     [System.String] $SearchBase,
     [System.String] $Server,
+    [System.String] $SiteName,
     [System.String] $Username
 )
 
@@ -19,38 +20,6 @@ $FolderPathOfCurrentScript = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 # Source Variables file path
 . ($FolderPathOfCurrentScript + "\Variables.ps1")
-
-if ($ADUserFolderPath.Length -eq 0) {
-    $ADUserFolderPath = $DefaultADUserFolderPath
-}
-
-if ($Company.Length -eq 0) {
-    $Company = $DefaultCompany
-}
-
-if ($Domain.Length -eq 0) {
-    $Domain = $DefaultDomain
-}
-
-if ($LogFilePath.Length -eq 0) {
-    $LogFilePath = $DefaultLogFilePath
-}
-
-if ($Password.Length -eq 0 ) {
-    $Password = $DefaultPassword
-}
-
-if ($SearchBase.Length -eq 0 ) {
-    $SearchBase = $DefaultSearchBase
-}
-
-if ($Server.Length -eq 0) {
-    $Server = $DefaultServer
-}
-
-if ($Username.Length -eq 0) {
-    $Username = $DefaultUsername
-}
 
 if ($AccessControlType -eq $null) {
     $AccessControlType = $DefaultAccessControlType
@@ -68,6 +37,42 @@ if ($PropagationFlag -eq $null) {
     $PropagationFlag = $DefaultPropagationFlag
 }
 
+if ($ADUserFolderPath.Length -eq 0) {
+    $ADUserFolderPath = $DefaultADUserFolderPath
+}
+
+if ($Company.Length -eq 0) {
+    $Company = $DefaultCompany
+}
+
+if ($Domain.Length -eq 0) {
+    $Domain = $DefaultDomain
+}
+
+if ($LogFilePath.Length -eq 0) {
+    $LogFilePath = $DefaultLogFilePath
+}
+
+if ($Password.Length -eq 0) {
+    $Password = $DefaultPassword
+}
+
+if ($SearchBase.Length -eq 0) {
+    $SearchBase = $DefaultSearchBase
+}
+
+if ($Server.Length -eq 0) {
+    $Server = $DefaultServer
+}
+
+if ($SiteName.Length -eq 0) {
+    $SiteName = $DefaultSiteName
+}
+
+if ($Username.Length -eq 0) {
+    $Username = $DefaultUsername
+}
+
 # Set current module path
 $CurrentModulePath = $FolderPathOfCurrentScript + "\WindowsPowerShell\Modules\"
 
@@ -76,8 +81,8 @@ if ([Environment]::GetEnvironmentVariable("PSModulePath").Contains($CurrentModul
     [Environment]::SetEnvironmentVariable("PSModulePath", ([Environment]::GetEnvironmentVariable("PSModulePath") + ';' + $CurrentModulePath))
 }
 
-Import-Module -Force -Name CreatingFolderForADUser -Verbose
+Import-Module -Force -Name NewFolderForADUser -Verbose
+$Usernames = New-FolderForADUser -ADUserFolderPath $ADUserFolderPath -Company $Company -Domain $Domain -LogFilePath $LogFilePath -Password $Password -SearchBase $SearchBase -Server $Server -Username $Username -AccessControlType $AccessControlType -FileSystemRight $FileSystemRight -InheritanceFlag $InheritanceFlag -PropagationFlag $PropagationFlag
 
-$Password = ConvertTo-SecureString -String $Password -AsPlainText -Force
-
-New-FolderForADUser -ADUserFolderPath $ADUserFolderPath -Company $Company -Domain $Domain -LogFilePath $LogFilePath -Password $Password -SearchBase $SearchBase -Server $Server -Username $Username -AccessControlType $AccessControlType -FileSystemRight $FileSystemRight -InheritanceFlag $InheritanceFlag -PropagationFlag $PropagationFlag
+Import-Module -Force -Name AddingWebDAVAuthoringRules -Verbose
+Add-WebDAVAuthoringRules -Domain $Domain -SiteName $SiteName -Usernames $Usernames
