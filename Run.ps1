@@ -15,7 +15,6 @@ param(
     [System.String] $Username
 )
 
-
 # Get folder path of currenct script
 $FolderPathOfCurrentScript = Split-Path -Parent $MyInvocation.MyCommand.Path
 
