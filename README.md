@@ -21,12 +21,12 @@
 		<li>$DefaultUsername          = "username"</li>
 	</ul>
 	<li>Excute Function</li>
-	  Without Parameter
-	  <ul>
-	  <li>./Run.ps1</li>
-	  </ul>
-	  Without Parameter
-	  <ul>
-	  <li>./Run.ps1 -Company "CSM"</li>
-	  </ul>
+	Without Parameter
+	<ul>
+		<li>./Run.ps1</li>
+	</ul>
+	Without Parameter
+	<ul>
+		<li>./Run.ps1 -Company "CSM"</li>
+	</ul>
 </ol>
