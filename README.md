@@ -3,6 +3,7 @@
 Rename VariablesSample.ps1 to Variables.ps1
 
 ## Assign Value
+```
 $DefaultAccessControlType = [System.Security.AccessControl.AccessControlType]::Allow
 
 $DefaultFileSystemRight = [System.Security.AccessControl.FileSystemRights]::FullControl
@@ -28,6 +29,7 @@ $DefaultServer = "server"
 $DefaultSiteName = "Default Web Site"
 
 $DefaultUsername = "username"
+```
 
 ## Excute Function
 - With Parameter
